@@ -13,6 +13,25 @@ Date: 04/11/2016
 import numpy as np
 
 #### SECTION 1. Code to read in file nas_Sor.in
+
+# Have this to be reading in tab separated files.    
+with open('nas_Sor.in','r') as infile:
+    n = int(infile.readline())
+    A = np.zeros((n,n))
+    b = np.zeros(n)
+    mat_temp = infile.readlines()
+    
+    for row in range(n+1):
+        if row != n:
+            for col in range(n):
+                # Now have this reading in one element at a time. Easy to pass into the CSR storage format
+                A[row,col] = float(mat_temp[row].strip().split("\t")[col])
+        else:
+            b[0:] = mat_temp[row].strip().split("\t")
+    
+    print(A)
+    print(b)
+
 #### END SECTION 1
 
 #### SECTION 2. Code to store sparse matix in CSR format
@@ -134,7 +153,15 @@ print(sparse_sor(csr,c,5,0.1,1.25))
 
 #### END SECTION 6
 
+### SECTION 7: Writing to nas_Sor.out
 
+# Need to have option to have custom filename otherwise nas_Sor.out
+# Need to work on formatting here to have the entries aligned
+with open('nas_Sor.out','w') as outfile:
+    outfile.write('Stopping reason\tMax num of iterations\tNumber of iterations\tMacine epsilon\tX seq tolerance\tResidual seq tolerance\n')
+    outfile.write('TestA\tTestB\tTestC\tTestD\tTestE\tTestF\n')
+
+### END SECTION 7
 
 #-------------------
 #-------------------
